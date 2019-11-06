@@ -1,8 +1,8 @@
 package myCollections;
 
-public class Node {
+public class Node<T> {
 
-    private int value; // Хранимое значение. Для которого и создавалась коллекция
+    private T value; // Хранимое значение. Для которого и создавалась коллекция
     private Node next; // Ссылка на следующий элемент коллекции.
 
     /**
@@ -15,16 +15,16 @@ public class Node {
     /**
      * Конструктор, принимающий хранимое значение.
      */
-    Node(int value) {
+    Node(T value) {
         this.value = value;
     }
 
 
-    public void setValue(int value) {
+    public void setValue(T value) {
         this.value = value;
     }
 
-    public int getValue() {
+    public T getValue() {
         return value;
     }
 

@@ -10,7 +10,7 @@ public class AppStart {
      * Метод indexOf(первое_добавленное_значение) будет возвращать 1.
      */
     public static ListOnArray arrayList;
-    public static ListOnLink linkedList;
+    public static ListOnLink<Integer> linkedList;
 
     public static void main(String[] args) {
 
@@ -36,17 +36,18 @@ public class AppStart {
         getInfoAboutLists();
 
         System.out.println("\nМетоды get()");
-        System.out.println(arrayList.get(1));   // 6
-        System.out.println(linkedList.get(1));  // 3
-        System.out.println(arrayList.get(8));   // 167
-        System.out.println(linkedList.get(8));  // 66
-        System.out.println(arrayList.get(888)); // null
-        System.out.println(linkedList.get(-8)); // null
+        System.out.println("Array 1: " + arrayList.get(1));   // 6
+        System.out.println("Link 1: " + linkedList.get(1));  // 3
+        System.out.println("Array 8: " + arrayList.get(8));   // 167
+        System.out.println("Link 8: " + linkedList.get(8));  // 66
+        System.out.println("Array 888: " + arrayList.get(888)); // null
+        System.out.println("Link -8: " + linkedList.get(-8)); // null
 
 
         System.out.println("\nМетоды indexOf()");
         System.out.println(arrayList.indexOf(new Integer(121))); // 6
         System.out.println(linkedList.indexOf(new Integer(38))); // 6
+
 
         System.out.println("\nМетоды remove()");
         System.out.println(arrayList.remove(4)); // 0
@@ -54,6 +55,9 @@ public class AppStart {
         System.out.println(arrayList.remove(-5)); // -1
         System.out.println(linkedList.remove(444)); // -1
         getInfoAboutLists();
+//        System.out.println("Array.Remove("+arrayList.size()+"): "+arrayList.remove(arrayList.size())); // 0
+//        System.out.println("Link.Remove("+linkedList.size()+"): "+linkedList.remove(linkedList.size())); // 0
+//        getInfoAboutLists();
 
 
         System.out.println("\nМетоды equals()\n----");
@@ -89,6 +93,6 @@ public class AppStart {
         System.out.println("-----\nlinkedList:");
         System.out.println("Is empty: " + linkedList.isEmpty());
         System.out.println("Size: " + linkedList.size());
-        linkedList.print();
+        System.out.println(linkedList.toString());
     }
 }

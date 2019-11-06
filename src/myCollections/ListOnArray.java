@@ -88,20 +88,18 @@ public class ListOnArray extends AbstractList<Integer> {
      */
     @Override
     public Integer remove(int index) {
-        if ((index >= 0) & (index < arrObjects.length)) {
-
+        if ((index > 0) & (index <= arrObjects.length)) {
+            index--;
             Integer[] newArray = new Integer[arrObjects.length - 1];
-            for (int i = 0; i < newArray.length; i++) {
+            for (int i = 0; i <= newArray.length; i++) {
                 if (i == index) {
                     continue;
-                }
-                if (i < index) {
+                } else if (i < index) {
                     newArray[i] = arrObjects[i];
                 } else {
-                    newArray[i] = arrObjects[i + 1];
+                    newArray[i - 1] = arrObjects[i];
                 }
             }
-
             arrObjects = newArray;
             return 0;
         }

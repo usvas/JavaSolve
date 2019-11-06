@@ -2,6 +2,7 @@ package myCollections;
 
 import java.util.AbstractList;
 
+
 /**
  * Разрабатываемая коллекция основана на принципе связного списка.
  * Она будет хранить целочисленные значения типа int.
@@ -9,16 +10,16 @@ import java.util.AbstractList;
  * Необходимо реализовать все приведённые здесь методы.
  * По желанию можно добавить свои методы. Уже реализован метод print().
  */
-public class ListOnLink extends AbstractList<Integer> {
+public class ListOnLink<T> extends AbstractList<T> {
 
-    private Node head;  // Элемент списка, которая хранит число и ссылку на следующий узел
+    private Node<T> head;  // Элемент списка, которая хранит число и ссылку на следующий узел
     private int size;   // Размер списка
 
     /**
      * Создание пустого списка.
      */
     public ListOnLink() {
-        head = new Node();
+        head = new Node<T>();
         size = 0;
     }
 
@@ -27,8 +28,8 @@ public class ListOnLink extends AbstractList<Integer> {
      * Должно возращаться значение true;
      */
     @Override
-    public boolean add(Integer i) {
-        Node t = head;
+    public boolean add(T i) {
+        Node<T> t = head;
         while (t.getNext() != null) {
             t = t.getNext();
         }
@@ -43,9 +44,10 @@ public class ListOnLink extends AbstractList<Integer> {
      * В случае невозможности удаления метод должен вернуть -1.
      */
     @Override
-    public Integer remove(int index) {
-        if (index > 0) {
-            Node t = head;
+    public T remove(int index) {
+        if ((index > 0) && (index <= size)) {
+            Node<T> t = head;
+            Node<T> rem = null;
             int i = 1;
             if (index == 1) {
                 head = head.getNext();
@@ -55,16 +57,16 @@ public class ListOnLink extends AbstractList<Integer> {
                     t = t.getNext();
                 }
                 if (t.getNext() == null) {
-                    return new Integer(-1);
+                    return null;
                 } else {
-                    t.getNext().setNext(t.getNext().getNext());
+                    rem = t.getNext().getNext();
+                    t.getNext().setNext(t.getNext().getNext().getNext());
                 }
             }
             size--;
-            return new Integer(0);
+            return rem.getValue();
         }
-        return new Integer(-1);
-
+        return null;
     }
 
 
@@ -75,23 +77,14 @@ public class ListOnLink extends AbstractList<Integer> {
      */
     @Override
     public int indexOf(Object o) {
-        return super.indexOf(o);
-    }
-
-
-    /**
-     * Если сложно с поиском элемента типа Object, реализуйте данный метод.
-     * Требования и описание аналогичное методу public int indexOf(Object o).
-     */
-    public int indexOf(int o) {
         if (!isEmpty()) {
-            Node t = head.getNext();
+            Node<T> t = head.getNext();
             int i = 1;
-            while ((t.getValue() != o) && (t.getNext() != null)) {
+            while ((!o.equals(t)) && (t.getNext() != null)) {
                 t = t.getNext();
                 i++;
             }
-            if (t.getValue() == o) {
+            if (o.equals(t)) {
                 return i;
             } else if (t.getNext() == null) {
                 return -1;
@@ -99,7 +92,6 @@ public class ListOnLink extends AbstractList<Integer> {
         }
         return -1;
     }
-
 
     /**
      * Метод должен очищать коллекцию.
@@ -139,12 +131,14 @@ public class ListOnLink extends AbstractList<Integer> {
     public int hashCode() {
         int hash = -1258768272;
         if (!isEmpty()) {
-            Node t = head;
+            Node<T> t = head;
             int i = 0;
             while ((t.getNext() != null)) {
                 t = t.getNext();
                 i++;
-                hash = hash + i * t.getValue();
+                T element = t.getValue();
+                hash = hash + i * element.hashCode();
+                ;
             }
 
         }
@@ -166,9 +160,9 @@ public class ListOnLink extends AbstractList<Integer> {
      * Если по каким-либо причинам вернуть не получилось, метод возвращает null.
      */
     @Override
-    public Integer get(int index) {
+    public T get(int index) {
         if (index > 0) {
-            Node t = head;
+            Node<T> t = head;
             int i = 1;
             while ((t.getNext() != null) && (i != (index))) {
                 i++;
@@ -193,18 +187,22 @@ public class ListOnLink extends AbstractList<Integer> {
      * Собственный метод, который будете использовать
      * для отслеживания изменений состояния коллекции.
      */
-    public void print() {
+    @Override
+    public String toString() {
+        String res = "";
         if (!isEmpty()) {
-            Node t = head.getNext();
-            System.out.print(t.getValue());
+            Node<T> t = head.getNext();
+            res += t.getValue().toString();
             while (t.getNext() != null) {
                 t = t.getNext();
-                System.out.print(", " + t.getValue());
+                res += ", " + t.getValue().toString();
             }
-            System.out.println(".");
+            res += ".";
         } else {
-            System.out.println("This list is empty.");
+            res += "This list is empty.";
         }
+        return res;
     }
+
 
 }
