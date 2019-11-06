@@ -9,7 +9,7 @@ public class AppStart {
      * Метод get(0) будет возвращать -1, а get(1) - значение первого добавленного элемента.
      * Метод indexOf(первое_добавленное_значение) будет возвращать 1.
      */
-    public static ListOnArray arrayList;
+    public static ListOnArray<Integer> arrayList;
     public static ListOnLink<Integer> linkedList;
 
     public static void main(String[] args) {

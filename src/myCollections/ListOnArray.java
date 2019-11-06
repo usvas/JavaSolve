@@ -1,5 +1,6 @@
 package myCollections;
 
+import java.lang.reflect.Array;
 import java.util.AbstractList;
 
 /**
@@ -10,19 +11,24 @@ import java.util.AbstractList;
  * Реализуйте метод print() по аналогии с методов в ListOnLink.
  * По желанию можно добавить и другие свои методы.
  */
-public class ListOnArray extends AbstractList<Integer> {
+public class ListOnArray<T> extends AbstractList {
 
     /**
      * Массив, который будет хранить все значения.
      */
-    private Integer[] arrObjects = new Integer[0];
+    private T[] arrObjects; // =    Array.newInstance(T,0);
+    private int size = 0;
+
+    private void initArray(Class cl, int len) {
+        arrObjects = (T[]) Array.newInstance(cl, len);
+    }
 
     /**
      * Метод возвращает размер коллекции.
      */
     @Override
     public int size() {
-        return arrObjects.length;
+        return size;
     }
 
     /**
@@ -39,12 +45,17 @@ public class ListOnArray extends AbstractList<Integer> {
      * Должно возращаться значение true;
      */
     @Override
-    public boolean add(Integer newValue) {
-        Integer[] newArray = new Integer[arrObjects.length + 1];
-        for (int i = 0; i < arrObjects.length; i++) {
+    public boolean add(T element) {
+        if (arrObjects == null) {
+            size = 0;
+            initArray(arrObjects.getClass(), size);
+        }
+        size++;
+        T[] newArray = (T[]) Array.newInstance(arrObjects.getClass(), size);
+        for (int i = 0; i < size; i++) {
             newArray[i] = arrObjects[i];
         }
-        newArray[arrObjects.length] = newValue;
+        newArray[size] = element;
         arrObjects = newArray;
         return true;
     }
@@ -56,7 +67,8 @@ public class ListOnArray extends AbstractList<Integer> {
      */
     @Override
     public void clear() {
-        arrObjects = new Integer[0];
+        size = 0;
+        arrObjects = (T[]) Array.newInstance(arrObjects.getClass(), size);
     }
 
 
@@ -65,7 +77,7 @@ public class ListOnArray extends AbstractList<Integer> {
      * Если по каким-либо причинам вернуть не получилось, метод возвращает null.
      */
     @Override
-    public Integer get(int index) {
+    public T get(int index) {
         if ((index >= 0) && (index < arrObjects.length)) {
             return arrObjects[index];
         }
@@ -77,7 +89,11 @@ public class ListOnArray extends AbstractList<Integer> {
      * позиции index на новое значение element.
      */
     @Override
-    public Integer set(int index, Integer element) {
+    public T set(int index, T element) {
+        if ((index > 0) && (index <= size)) {
+            arrObjects[index - 1] = element;
+            return element;
+        }
         return null;
     }
 
@@ -87,10 +103,11 @@ public class ListOnArray extends AbstractList<Integer> {
      * В случае невозможности удаления метод должен вернуть -1.
      */
     @Override
-    public Integer remove(int index) {
+    public T remove(int index) {
         if ((index > 0) & (index <= arrObjects.length)) {
             index--;
-            Integer[] newArray = new Integer[arrObjects.length - 1];
+            size--;
+            T[] newArray = (T[]) Array.newInstance(arrObjects.getClass(), size);
             for (int i = 0; i <= newArray.length; i++) {
                 if (i == index) {
                     continue;
@@ -101,9 +118,9 @@ public class ListOnArray extends AbstractList<Integer> {
                 }
             }
             arrObjects = newArray;
-            return 0;
+            return arrObjects[index];
         }
-        return -1;
+        return null;
     }
 
     /**
@@ -113,9 +130,9 @@ public class ListOnArray extends AbstractList<Integer> {
      */
     @Override
     public int indexOf(Object o) {
-        int i = (Integer) o;
+//        int i = (Integer) o;
         for (int j = 0; j < arrObjects.length; j++) {
-            if (i == arrObjects[j]) {
+            if (o.equals(arrObjects[j])) {
                 return j + 1;
             }
         }
